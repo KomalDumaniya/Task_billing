@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="order_action" model="ir.actions.act_window">
+        <field name="name">Sales</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="view_task_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_create_bill" string="Create Bill" type="object" class="oe_highlight" invisible="bill_created or status != 'In Progress'" />
+            </xpath>
+            <xpath expr="//button[@name='action_create_bill']" position="after">
+                <field name="status" widget="statusbar" options="{'clickable': '1'}"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div/button[@name='action_open_ratings']" position="after">
+                <button name="action_view_bills" type="object" class="oe_stat_button" icon="fa-usd" invisible="bill_created == False or bill_refund == True">
+                    <div class="o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="bill_count"/>
+                        </span>
+                        <span class="o_stat_text">
+                            Bill
+                        </span>
+                    </div>
+                </button>
+                <button name="action_refund_bills" type="object" class="oe_stat_button" icon="fa-usd" invisible="bill_refund == False">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">
+                            Refund
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//group/group/field[@name='partner_id']" position="before">
+                <field name="invoice_date" style="font-weight:bold;" />
+            </xpath>
+            <xpath expr="//group/group/field[@name='project_id']" position="before">
+                <field name="vendor_id" string="Vendor"/>
+                <field name="bill_created" invisible="1"/>
+                <field name="bill_refund" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='description_page']" position="before">
+                <page string="Invoice Lines" name="invoice_lines">
+                    <field name="bill_line_ids">
+                        <tree editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="quantity"/>
+                            <field name="price_unit"/>
+                            <field name="tax_ids" widget="many2many_tags"/>
+                            <field name="price_subtotal"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+            

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="billing_menu_root" name="Billing">
+        <menuitem id="quotation_menu" name="Quotation">
+            <menuitem id="sale_order_model_menu_action" action="order_action"/>
+        </menuitem>
+    </menuitem>
+
+</odoo>
